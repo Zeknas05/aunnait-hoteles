@@ -1,5 +1,9 @@
 <?php
 
+use App\Http\Controllers\Dashboard\GuestController;
+use App\Http\Controllers\Dashboard\HotelController;
+use App\Http\Controllers\Dashboard\RoomController;
+use App\Http\Controllers\Dashboard\ServiceController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +20,7 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+Route::resource('hotel', HotelController::class);
+Route::resource('service', ServiceController::class);
+Route::resource('room', RoomController::class);
+Route::resource('guest', GuestController::class);
