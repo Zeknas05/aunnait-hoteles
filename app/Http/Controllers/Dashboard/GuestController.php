@@ -61,8 +61,7 @@ class GuestController extends Controller
      */
     public function update(PutRequest $request, Guest $guest)
     {
-        $data = $request->validated();
-        $guest->update($data);
+        $guest->update($request->validated());
         return to_route('guest.index');
     }
 

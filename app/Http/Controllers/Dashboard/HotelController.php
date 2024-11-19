@@ -61,8 +61,7 @@ class HotelController extends Controller
      */
     public function update(PutRequest $request, Hotel $hotel)
     {
-        $data = $request->validated();
-        $hotel->update($data);
+        $hotel->update($request->validated());
         return to_route('hotel.index');
     }
 

@@ -44,7 +44,9 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
-        return view('dashboard/room/show',['room'=>$room]);
+        $hotels = Hotel::pluck('id', 'name');
+        $room = new Room();
+        return view('dashboard/room/show',compact('hotels','room'));
     }
 
     /**
@@ -52,7 +54,8 @@ class RoomController extends Controller
      */
     public function edit(Room $room)
     {
-        return view('dashboard.room.edit', ['room'=>$room]);
+        $hotels = Hotel::pluck('id', 'name');
+        return view('dashboard.room.edit', compact('hotels', 'room'));
     }
 
     /**
@@ -60,8 +63,7 @@ class RoomController extends Controller
      */
     public function update(PutRequest $request, Room $room)
     {
-        $data = $request->validated();
-        $room->update($data);
+        $room->update($request->validated());
         return to_route('room.index');
     }
 

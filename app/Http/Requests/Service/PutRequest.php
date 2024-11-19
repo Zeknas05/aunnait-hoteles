@@ -2,6 +2,8 @@
 
 namespace App\Http\Requests\Service;
 
+use Illuminate\Validation\ValidationException;
+use Illuminate\Http\Response;
 use Illuminate\Foundation\Http\FormRequest;
 
 class PutRequest extends FormRequest
@@ -25,5 +27,13 @@ class PutRequest extends FormRequest
             'name' => 'required|min:1|max:20',
             'description' => 'required|min:5|max:500',
         ];
+    }
+
+    public function failedValidation(\Illuminate\Contracts\Validation\Validator $validator)
+    {
+        if($this->expectsJson()){
+            $response = new Response($validator->errors(), 422);
+            throw new ValidationException($validator, $response);
+        }
     }
 }
