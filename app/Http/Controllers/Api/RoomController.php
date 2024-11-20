@@ -14,10 +14,32 @@ class RoomController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        Room::paginate(2);
-        return response()->json(Room::paginate(5));
+        $number = $request->input('number');
+        $type = $request->input('type');
+        $nightPrice = $request->input('nightPrice');
+        $hotelId = $request->input('hotelId');
+
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+
+        $query = Room::query();
+
+        if($number){
+            $query->where('number', 'LIKE', "%{$number}%");
+        }
+        if($type){
+            $query->where('type', 'LIKE', "%{$type}%");
+        }
+        if($nightPrice){
+            $query->where('nightPrice', 'LIKE', "%{$nightPrice}%");
+        }
+        if($hotelId){
+            $query->where('hotelId', 'LIKE', "%{$hotelId}%");
+        }
+
+        return response()->json($query->paginate($perPage, ['*'], 'page', $page));
     }
 
     public function all()
@@ -62,7 +84,7 @@ class RoomController extends Controller
     public function guests(Room $room)
     {
         $guests = Guest::with('room')
-        ->where('room_id', $room->id)
+        ->where('roomId', $room->id)
         ->get();
         return response()->json($guests);
     }

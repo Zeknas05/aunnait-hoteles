@@ -10,9 +10,9 @@
 <input type="text" name="nightPrice" value='{{old('phoneNumber', $room->nightPrice)}}'>
 
 <label for="">Hotel</label>
-<select name="hotel_id">
+<select name="hotelId">
     @foreach ($hotels as $number=>$id)
-        <option  {{old('hotel_id', $room->hotel_id)  == $id ? 'selected' : ''}} value="{{$id}}">{{$number}}</option>
+        <option  {{old('hotelId', $room->hotelId)  == $id ? 'selected' : ''}} value="{{$id}}">{{$number}}</option>
     @endforeach
 </select>
 

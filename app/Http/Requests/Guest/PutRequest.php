@@ -29,7 +29,7 @@ class PutRequest extends FormRequest
             'passportID' => 'required|min:9|max:9',
             'checkinDate' => 'required|date',
             'checkoutDate' => 'required|date',
-            'room_id' => 'required|integer',
+            'roomId' => 'required|integer',
         ];
     }
 

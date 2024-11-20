@@ -44,6 +44,7 @@ class HotelController extends Controller
      */
     public function show(Hotel $hotel)
     {
+        $hotel = $hotel->load('services');
         return view('dashboard/hotel/show',['hotel'=>$hotel]);
     }
 

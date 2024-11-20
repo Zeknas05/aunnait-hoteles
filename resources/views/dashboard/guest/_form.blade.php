@@ -16,9 +16,9 @@
 <input type="date" name="checkoutDate" value='{{old('checkoutDate', $guest->checkoutDate)}}'>
 
 <label for="">Habitación</label>
-<select name="room_id">
+<select name="roomId">
     @foreach ($rooms as $number=>$id)
-        <option  {{old('room_id', $guest->room_id)  == $id ? 'selected' : ''}} value="{{$id}}">{{$number}}</option>
+        <option  {{old('roomId', $guest->roomId)  == $id ? 'selected' : ''}} value="{{$id}}">{{$number}}</option>
     @endforeach
 </select>
 

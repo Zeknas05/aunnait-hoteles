@@ -29,6 +29,8 @@ class PutRequest extends FormRequest
             'phoneNumber' => 'required|min:3|max:9',
             'email' => 'required|min:4|max:50',
             'website' => 'required|min:4|max:50',
+            'services' => 'array',
+            'services.*' => 'exists:services,id',
         ];
     }
 

@@ -20,6 +20,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::get('/vue', function() {
+    return view('vue');
+});
 Route::resource('hotel', HotelController::class);
 Route::resource('service', ServiceController::class);
 Route::resource('room', RoomController::class);

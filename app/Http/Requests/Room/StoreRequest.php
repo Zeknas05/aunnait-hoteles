@@ -27,7 +27,7 @@ class StoreRequest extends FormRequest
             'number' => 'required|min:1|max:5',
             'type' => 'required|min:1|max:20',
             'nightPrice' => 'required|min:1|max:10',
-            'hotel_id' => 'required|integer',
+            'hotelId' => 'required|integer',
         ];
     }
 

@@ -13,10 +13,40 @@ class GuestController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        Guest::paginate(2);
-        return response()->json(Guest::paginate(5));
+        $name = $request->input('name');
+        $surname = $request->input('surname');
+        $passportID = $request->input('passportID');
+        $checkinDate = $request->input('checkinDate');
+        $checkoutDate = $request->input('checkoutDate');
+        $roomId = $request->input('roomId');
+
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+
+        $query = Guest::query();
+
+        if($name){
+            $query->where('name', 'LIKE', "%{$name}%");
+        }
+        if($surname){
+            $query->where('surname', 'LIKE', "%{$surname}%");
+        }
+        if($passportID){
+            $query->where('passportID', 'LIKE', "%{$passportID}%");
+        }
+        if($checkinDate){
+            $query->where('checkinDate', 'LIKE', "%{$checkinDate}%");
+        }
+        if($checkoutDate){
+            $query->where('checkoutDate', 'LIKE', "%{$checkoutDate}%");
+        }
+        if($roomId){
+            $query->where('roomId', 'LIKE', "%{$roomId}%");
+        }
+
+        return response()->json($query->paginate($perPage, ['*'], 'page', $page));
     }
 
     public function all()

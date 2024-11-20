@@ -12,6 +12,6 @@ class Service extends Model
     protected $fillable = ['name', 'description'];
 
     public function services(): BelongsToMany{
-        return $this->belongsToMany(Service::class);
+        return $this->belongsToMany(Hotel::class, 'services_hotel', 'serviceId', 'hotelId');
     }
 }

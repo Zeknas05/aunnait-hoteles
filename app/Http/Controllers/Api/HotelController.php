@@ -14,10 +14,36 @@ class HotelController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        Hotel::paginate(2);
-        return response()->json(Hotel::paginate(5));
+        $name = $request->input('name');
+        $adress = $request->input('adress');
+        $phoneNumber = $request->input('phoneNumber');
+        $email = $request->input('email');
+        $website = $request->input('website');
+
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+
+        $query = Hotel::query();
+
+        if($name){
+            $query->where('name', 'LIKE', "%{$name}%");
+        }
+        if($adress){
+            $query->where('adress', 'LIKE', "%{$adress}%");
+        }
+        if($phoneNumber){
+            $query->where('phoneNumber', 'LIKE', "%{$phoneNumber}%");
+        }
+        if($email){
+            $query->where('email', 'LIKE', "%{$email}%");
+        }
+        if($website){
+            $query->where('website', 'LIKE', "%{$website}%");
+        }
+
+        return response()->json($query->paginate($perPage, ['*'], 'page', $page));
     }
     
     public function all()
@@ -30,7 +56,11 @@ class HotelController extends Controller
      */
     public function store(StoreRequest $request)
     {
-        return response()->json(Hotel::create($request->validated()));
+        $hotel = Hotel::create($request->validated());
+        if ($request->has('services')) {
+            $hotel->services()->attach($request->services);
+        }
+        return response()->json($hotel);
     }
 
     /**
@@ -38,6 +68,7 @@ class HotelController extends Controller
      */
     public function show(Hotel $hotel)
     {
+        $hotel = $hotel->load('services');
         return response()->json($hotel);
     }
 
@@ -47,6 +78,9 @@ class HotelController extends Controller
     public function update(PutRequest $request, Hotel $hotel)
     {
         $hotel->update($request->validated());
+        if ($request->has('services')) {
+            $hotel->services()->sync($request->services);
+        }
         return response()->json($hotel);
     }
 
@@ -62,7 +96,7 @@ class HotelController extends Controller
     public function rooms(Hotel $hotel)
     {
         $rooms = Room::with('hotel')
-        ->where('hotel_id', $hotel->id)
+        ->where('hotelId', $hotel->id)
         ->get();
         return response()->json($rooms);
     }

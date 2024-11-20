@@ -13,10 +13,24 @@ class ServiceController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        Service::paginate(2);
-        return response()->json(Service::paginate(5));
+        $name = $request->input('name');
+        $description = $request->input('description');
+
+        $perPage = $request->input('per_page', 5);
+        $page = $request->input('page', 1);
+
+        $query = Service::query();
+
+        if($name){
+            $query->where('name', 'LIKE', "%{$name}%");
+        }
+        if($description){
+            $query->where('surname', 'LIKE', "%{$description}%");
+        }
+
+        return response()->json($query->paginate($perPage, ['*'], 'page', $page));
     }
 
     public function all()
