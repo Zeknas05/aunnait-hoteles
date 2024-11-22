@@ -12,8 +12,57 @@ use Illuminate\Http\Request;
 class RoomController extends Controller
 {
     /**
-     * Display a listing of the resource.
-     */
+    * @OA\Get(
+    *     path="/api/room",
+    *     summary="Obtener lista de habitaciones",
+    *     description="Devuelve una lista de habitaciones con la posibilidad de filtrar por número, tipo, precio por noche e id del hotel, y paginar los resultados.",
+    *     tags={"Habitaciones"},
+        *     @OA\Parameter(
+    *         name="number",
+    *         in="query",
+    *         description="Filtrar por número de la habitación",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
+    *     @OA\Parameter(
+    *         name="type",
+    *         in="query",
+    *         description="Filtrar por el tipo de la habitación",
+    *         required=false,
+    *         @OA\Schema(type="string")
+    *     ),
+    *     @OA\Parameter(
+    *         name="nightPrice",
+    *         in="query",
+    *         description="Filtrar por precio de la habitación",
+    *         required=false,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\Parameter(
+    *         name="hotelId",
+    *         in="query",
+    *         description="Filtrar por id del hotel",
+    *         required=false,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\Parameter(
+    *         name="page",
+    *         in="query",
+    *         description="Número de página",
+    *         required=false,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\Parameter(
+    *         name="per_page",
+    *         in="query",
+    *         description="Número de elementos por página",
+    *         required=false,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\Response(response=200, description="Lista de habitaciones obtenida"),
+    *     @OA\Response(response=400, description="Solicitud incorrecta")
+    * )
+    */
     public function index(Request $request)
     {
         $number = $request->input('number');
@@ -42,30 +91,106 @@ class RoomController extends Controller
         return response()->json($query->paginate($perPage, ['*'], 'page', $page));
     }
 
-    public function all()
-    {
-        return response()->json(Room::get());
-    }
-
     /**
-     * Store a newly created resource in storage.
-     */
+    * @OA\Post(
+    *     path="/api/room",
+    *     summary="Crear una nueva habitación",
+    *     tags={"Habitaciones"},
+    *     description="Crea una nueva habitación con los datos introducidos",
+    *     @OA\RequestBody(
+    *         required=true,
+    *         description="Datos necesarios para crear una habitación",
+    *         @OA\JsonContent(
+    *             type="object",
+    *             @OA\Property(property="number", type="string"),
+    *             @OA\Property(property="type", type="string"),
+    *             @OA\Property(property="nightPrice", type="integer"),
+    *             @OA\Property(property="hotelId", type="integer")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=201,
+    *         description="Habitación creada",
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="Datos inválidos"
+    *     )
+    * )
+    */
+
     public function store(StoreRequest $request)
     {
         return response()->json(Room::create($request->validated()));
     }
 
     /**
-     * Display the specified resource.
-     */
+    * @OA\Get(
+    *     path="/api/room/{id}",
+    *     summary="Obtener una habitación",
+    *     tags={"Habitaciones"},
+    *     @OA\Parameter(
+    *         name="id",
+    *         in="path",
+    *         description="ID de la habitación",
+    *         required=true,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Habitación encontrada"
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="Habitación no encontrada"
+    *     )
+    * )
+    */
+
     public function show(Room $room)
     {
         return response()->json($room);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
+   /**
+    * @OA\Put(
+    *     path="/api/room/{id}",
+    *     summary="Actualizar una habitación",
+    *     tags={"Habitaciones"},
+    *     description="Actualiza una habitación con los datos introducidos",
+    *     @OA\Parameter(
+    *         name="id",
+    *         in="path",
+    *         description="ID de la habitación a actualizar",
+    *         required=true,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\RequestBody(
+    *         required=true,
+    *         description="Datos que se pueden actualizar de la habitación",
+    *         @OA\JsonContent(
+    *             type="object",
+    *             @OA\Property(property="number", type="string"),
+    *             @OA\Property(property="type", type="string"),
+    *             @OA\Property(property="nightPrice", type="integer"),
+    *             @OA\Property(property="hotelId", type="integer")
+    *         )
+    *     ),
+    *     @OA\Response(
+    *         response=201,
+    *         description="Habitación actualizada",
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="Habitación no encontrada"
+    *     ),
+    *     @OA\Response(
+    *         response=400,
+    *         description="Solicitud incorrecta"
+    *     )
+    * )
+    */
+
     public function update(PutRequest $request, Room $room)
     {
         $room->update($request->validated());
@@ -73,19 +198,32 @@ class RoomController extends Controller
     }
 
     /**
-     * Remove the specified resource from storage.
-     */
+    * @OA\Delete(
+    *     path="/api/room/{id}",
+    *     summary="Eliminar una habitación",
+    *     tags={"Habitaciones"},
+    *     description="Elimina una habitación por su ID.",
+    *     @OA\Parameter(
+    *         name="id",
+    *         in="path",
+    *         description="ID de la habitación",
+    *         required=true,
+    *         @OA\Schema(type="integer")
+    *     ),
+    *     @OA\Response(
+    *         response=200,
+    *         description="Habitación eliminada",
+    *     ),
+    *     @OA\Response(
+    *         response=404,
+    *         description="Habitación no encontrada"
+    *     )
+    * )
+    */
+
     public function destroy(Room $room)
     {
         $room->delete();
         return response()->json('OK');
-    }
-
-    public function guests(Room $room)
-    {
-        $guests = Guest::with('room')
-        ->where('roomId', $room->id)
-        ->get();
-        return response()->json($guests);
     }
 }
