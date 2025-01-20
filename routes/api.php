@@ -16,7 +16,9 @@ use Illuminate\Support\Facades\Route;
 | be assigned to the "api" middleware group. Make something great!
 |
 */
-
+Route::get('hotel/all', [HotelController::class, 'getAll']);
+Route::get('room/all', [RoomController::class, 'getAll']);
+Route::get('service/all', [ServiceController::class, 'getAll']);
 Route::resource('hotel', HotelController::class)->except('create', 'edit');
 Route::resource('room', RoomController::class)->except('create', 'edit');
 Route::resource('guest', GuestController::class)->except('create', 'edit');

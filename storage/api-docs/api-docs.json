@@ -320,6 +320,18 @@
                         }
                     },
                     {
+                        "name": "services",
+                        "in": "query",
+                        "description": "Filtrar por servicios del hotel",
+                        "required": false,
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    {
                         "name": "page",
                         "in": "query",
                         "description": "Número de página",
@@ -513,6 +525,24 @@
                     },
                     "404": {
                         "description": "Hotel no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/hotel/all": {
+            "get": {
+                "tags": [
+                    "Hoteles"
+                ],
+                "summary": "Obtener todos los hoteles",
+                "description": "Obtener todos los hoteles sin filtrar ni paginar.",
+                "operationId": "ff7eb39765804776ec260db97eeaff13",
+                "responses": {
+                    "200": {
+                        "description": "Lista de hoteles obtenida"
+                    },
+                    "400": {
+                        "description": "Solicitud incorrecta"
                     }
                 }
             }
@@ -742,6 +772,24 @@
                 }
             }
         },
+        "/api/room/all": {
+            "get": {
+                "tags": [
+                    "Habitaciones"
+                ],
+                "summary": "Obtener todas las habitaciones",
+                "description": "Obtener todas las habitaciones sin filtrar ni paginar.",
+                "operationId": "9b7d056eef1a19bc0a5b3a6eee147572",
+                "responses": {
+                    "200": {
+                        "description": "Lista de habitaciones obtenida"
+                    },
+                    "400": {
+                        "description": "Solicitud incorrecta"
+                    }
+                }
+            }
+        },
         "/api/service": {
             "get": {
                 "tags": [
@@ -860,42 +908,13 @@
                     }
                 }
             },
-            "delete": {
-                "tags": [
-                    "Servicios"
-                ],
-                "summary": "Eliminar un servicio",
-                "description": "Elimina un servicio por su ID.",
-                "operationId": "37d170d40a128108cade24e799dcb661",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "description": "ID del servicio",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Servicio eliminado"
-                    },
-                    "404": {
-                        "description": "Servicio no encontrado"
-                    }
-                }
-            }
-        },
-        "/api/services/{id}": {
             "put": {
                 "tags": [
                     "Servicios"
                 ],
                 "summary": "Actualizar un servicio",
                 "description": "Actualiza un servicio con los datos introducidos",
-                "operationId": "14e625e6fca9956d1143de1f41a8a228",
+                "operationId": "1c567f74875792370994cfe7151af218",
                 "parameters": [
                     {
                         "name": "id",
@@ -932,6 +951,51 @@
                     },
                     "404": {
                         "description": "Servicio no encontrado"
+                    },
+                    "400": {
+                        "description": "Solicitud incorrecta"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Eliminar un servicio",
+                "description": "Elimina un servicio por su ID.",
+                "operationId": "37d170d40a128108cade24e799dcb661",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID del servicio",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Servicio eliminado"
+                    },
+                    "404": {
+                        "description": "Servicio no encontrado"
+                    }
+                }
+            }
+        },
+        "/api/service/all": {
+            "get": {
+                "tags": [
+                    "Servicios"
+                ],
+                "summary": "Obtener todos los servicios",
+                "description": "Obtener todos los servicios sin filtrar ni paginar.",
+                "operationId": "ea96368be51e6a69e50719963ffa164b",
+                "responses": {
+                    "200": {
+                        "description": "Lista de servicios obtenida"
                     },
                     "400": {
                         "description": "Solicitud incorrecta"

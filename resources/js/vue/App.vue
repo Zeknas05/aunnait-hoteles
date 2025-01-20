@@ -1,15 +1,14 @@
 <template>
-    <div>
-        <h1>Principal</h1>
-        <list />
-    </div>
+    <router-view />
 </template>
 
 <script>
+    import { ref } from 'vue';
     import List from './components/List.vue'
+    import HomeRoute from './components/HomeRoute.vue'
+
+
     export default{
-        components:{
-            List
-        }
+        name:'App',
     }
 </script>

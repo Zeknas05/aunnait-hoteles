@@ -11,7 +11,7 @@ class Service extends Model
     use HasFactory;
     protected $fillable = ['name', 'description'];
 
-    public function services(): BelongsToMany{
+    public function hotels(): BelongsToMany{
         return $this->belongsToMany(Hotel::class, 'services_hotel', 'serviceId', 'hotelId');
     }
 }
